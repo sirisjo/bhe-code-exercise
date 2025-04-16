@@ -10,13 +10,13 @@ export class Sieve {
 
   nthPrime(n: number): number {
     this.validateInput(n);
-    let multiplicationFactor = 2;
-    let seiveSize = n * multiplicationFactor;
+    let multiplier = 2;
+    let sieveSize = n * multiplier;
     let primes = [2];
     while (primes.length < n) {
-      primes = this.createPrimeArray(seiveSize);
-      multiplicationFactor += 1;
-      seiveSize = n * multiplicationFactor;
+      primes = this.createPrimeArray(sieveSize);
+      multiplier += 1;
+      sieveSize = n * multiplier;
     }
     return primes[n];
   }
@@ -35,58 +35,58 @@ export class Sieve {
   }
 
   /**
-   * Creates a sequantially ordered array of prime numbers.
+   * Creates a sequentially ordered array of prime numbers.
    *
    * @remarks
    * Uses the Sieve of Eratosthenes algorithm to get primes.
    * The index of the sieve represents its number (ie, index 2 represents the number 2).
-   * Primes are represented by `1` at an index in the seive, and composites are represented by `0`.
-   * Therefore, seive[2] = 1 means that the number 2 is prime.
-   * If a prime is found in the seive, it is added to the array of primes. This ensures primes are ordered sequentially.
+   * Primes are represented by `1` at an index in the sieve, and composites are represented by `0`.
+   * Therefore, sieve[2] = 1 means that the number 2 is prime.
+   * If a prime is found in the sieve, it is added to the array of primes. This ensures primes are ordered sequentially.
    *
-   * @param seiveSize - The size of the seive.
+   * @param sieveSize - The size of the sieve.
    * @returns An array of ordered prime numbers.
    *
    */
-  private createPrimeArray(seiveSize: number): number[] {
-    let seive = new Uint8Array(seiveSize).fill(1);
+  private createPrimeArray(sieveSize: number): number[] {
+    let sieve = new Uint8Array(sieveSize).fill(1);
     const primes = new Array();
-    for (let i = 2; i < seiveSize; i++) {
-      if (seive[i] == 1) {
+    for (let i = 2; i < sieveSize; i++) {
+      if (sieve[i] == 1) {
         primes.push(i);
-        seive = this.markMultiplicatives(seiveSize, i, seive);
+        sieve = this.markMultiples(sieveSize, i, sieve);
       }
     }
     return primes;
   }
 
   /**
-   * Marks multiplicatives of the current prime number in the seive.
+   * Marks multiples of the current prime number in the sieve.
    *
    * @remarks The current prime is multiplied by itself to find the first multiple,
-   * which is then marked as composite (0) in the seive.
+   * which is then marked as composite (0) in the sieve.
    *
-   * This process continues until the multiple is out of range of the seive.
+   * This process continues until the multiple is out of range of the sieve.
    *
-   * @param seiveSize - The size of the seive.
+   * @param sieveSize - The size of the sieve.
    * @param currentPrime - The current prime.
-   * @param seive - The seive to edit.
-   * @returns The updated seive.
+   * @param sieve - The sieve to edit.
+   * @returns The updated sieve.
    *
    */
-  private markMultiplicatives(
-    seiveSize: number,
+  private markMultiples(
+    sieveSize: number,
     currentPrime: number,
-    seive: Uint8Array
+    sieve: Uint8Array
   ): Uint8Array {
-    for (let j = currentPrime; j < seiveSize; j++) {
+    for (let j = currentPrime; j < sieveSize; j++) {
       const currentMultiple = j * currentPrime;
-      if (currentMultiple < seiveSize) {
-        seive[currentMultiple] = 0;
+      if (currentMultiple < sieveSize) {
+        sieve[currentMultiple] = 0;
       } else {
         break;
       }
     }
-    return seive;
+    return sieve;
   }
 }
