@@ -1,3 +1,3 @@
-const Sieve = require("./Sieve/sieve");
+const Sieve = require("./Sieve/sieve").default;
 
 module.exports = Sieve;
